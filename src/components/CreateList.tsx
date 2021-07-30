@@ -8,7 +8,7 @@ import { postList } from '../api/list';
 const FormContainer = styled.div`
   flex: 0 0 auto; // overflow inner display
   width: 284px;
-  min-height: 76px;
+  min-height: 82px;
   background: #ececec;
   padding: 5px;
   border-radius: 8px;

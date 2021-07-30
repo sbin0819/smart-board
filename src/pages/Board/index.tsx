@@ -14,6 +14,8 @@ const Container = styled.div`
 const ListContainer = styled.div`
   display: flex;
   gap: 20px;
+  align-items: flex-start;
+  align-content: flex-start;
 `;
 
 function Board() {

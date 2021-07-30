@@ -1,9 +1,11 @@
-import { Input, Button } from 'antd';
+import { Input } from 'antd';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useState } from 'react';
 
 import { updateList, deleteList } from '../api/list';
+
+import CreateCard from './CreateCard';
 
 const ListContainer = styled.div`
   flex: 0 0 auto; // overflow inner display
@@ -12,7 +14,7 @@ const ListContainer = styled.div`
   background: #ececec;
   padding: 5px;
   border-radius: 8px;
-  input {
+  .list_title {
     width: 80%;
     background: none;
     border: none;
@@ -27,10 +29,9 @@ const FootContainer = styled.div`
     display: flex;
     align-items: center;
     margin-left: 6px;
-    button {
-      border: none;
-      background: inherit;
-    }
+    cursor: pointer;
+    height: 40px;
+    width: 50%;
   }
 `;
 
@@ -46,7 +47,8 @@ function Board({ title, id }: IProps) {
 
   const [isOpenCard, setIsOpenCard] = useState(false);
 
-  const [cardContent, setCardContent] = useState('');
+  const closeAddCard = () => setIsOpenCard(false);
+  const openAddCard = () => setIsOpenCard(true);
 
   return (
     <ListContainer>
@@ -57,7 +59,8 @@ function Board({ title, id }: IProps) {
         }}
       >
         <Input
-          name="list-title"
+          className="list_title"
+          name="list_title"
           placeholder="Enter list title..."
           value={focused ? newTitle : title}
           onFocus={onFocus}
@@ -69,12 +72,12 @@ function Board({ title, id }: IProps) {
         />
         <CloseOutlined onClick={() => deleteList(id)} />
       </form>
-      {isOpenCard && <div>open</div>}
+      {isOpenCard && <CreateCard />}
       {!isOpenCard && (
         <FootContainer>
-          <div className="add_card">
+          <div className="add_card" onClick={() => openAddCard()}>
             <PlusOutlined />
-            <Button>Add a Card</Button>
+            <p>Add a Card</p>
           </div>
         </FootContainer>
       )}
