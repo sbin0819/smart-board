@@ -1,6 +1,8 @@
 import { Row, Col } from 'antd';
 
-function home() {
+import { useStore } from '../context';
+function Home() {
+  const [{ message }, dispatch] = useStore();
   return (
     <Row align="middle" style={{ height: 400, textAlign: 'center' }}>
       <Col span={24}>
@@ -17,4 +19,4 @@ function home() {
   );
 }
 
-export default home;
+export default Home;
