@@ -1,8 +1,22 @@
-import { Row, Col } from 'antd';
+import { Row, Col, Button } from 'antd';
+import { Link } from 'react-router-dom';
 
 import { useStore } from '../context';
+import { SET_MEMO } from '../context/memo';
+
 function Home() {
-  const [{ message }, dispatch] = useStore();
+  const [_, dispatch] = useStore();
+  const onClick = () => {
+    dispatch({
+      type: SET_MEMO,
+      payload: {
+        type: 'good type',
+        text: 'text',
+        date: new Date(),
+        autoClose: false,
+      },
+    });
+  };
   return (
     <Row align="middle" style={{ height: 400, textAlign: 'center' }}>
       <Col span={24}>
@@ -15,6 +29,8 @@ function Home() {
           aliquam! Et atque distinctio obcaecati odio fugiat expedita ipsum.
         </p>
       </Col>
+      <Link to="/sub">sub</Link>
+      <Button onClick={onClick}>버튼</Button>
     </Row>
   );
 }

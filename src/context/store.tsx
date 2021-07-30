@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer } from 'react';
 import { messageReducer, messageInitialState } from './message';
+import { memoReducer, memoInitialState } from './memo';
 
 /**
  * React context for store
@@ -11,6 +12,7 @@ const StoreContext = createContext<any>(null);
  */
 const store = {
   message: messageInitialState,
+  memo: memoInitialState,
 };
 
 /**
@@ -18,6 +20,7 @@ const store = {
  */
 const reducers = (store: any, action: any) => ({
   message: messageReducer(store.message, action),
+  memo: memoReducer(store.memo, action),
 });
 
 /**
