@@ -2,14 +2,16 @@ import { Fragment } from 'react';
 import { Route } from 'react-router-dom';
 
 import { GlobalStyles } from './styles';
-import Home from './pages/home';
+import Header from './layouts/Header';
+import Board from './pages/Board';
 import Sub from './pages/sub';
 
 function App() {
   return (
     <Fragment>
       <GlobalStyles />
-      <Route exact path="/" component={Home} />
+      <Header />
+      <Route exact path="/" component={Board} />
       <Route exact path="/sub" component={Sub} />
     </Fragment>
   );
