@@ -6,6 +6,11 @@ import { useState } from 'react';
 import { updateList, deleteList } from '../api/list';
 
 import CreateCard from './CreateCard';
+import useFetchData from '../hooks/useFetchData';
+
+import { ICard } from '../types/card';
+
+import Card from './Card';
 
 const ListContainer = styled.div`
   flex: 0 0 auto; // overflow inner display
@@ -40,6 +45,14 @@ interface IProps {
   id: string;
 }
 function Board({ title, id }: IProps) {
+  const {
+    data: cardData,
+    loading,
+    error,
+  }: { data: ICard[]; loading: any; error: any } = useFetchData(
+    `/cards?listId=${id}`,
+  );
+
   const [newTitle, setNewTitle] = useState(title);
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
@@ -49,6 +62,10 @@ function Board({ title, id }: IProps) {
 
   const closeAddCard = () => setIsOpenCard(false);
   const openAddCard = () => setIsOpenCard(true);
+
+  if (loading) {
+    return <div>card loading...</div>;
+  }
 
   return (
     <ListContainer>
@@ -72,6 +89,7 @@ function Board({ title, id }: IProps) {
         />
         <CloseOutlined onClick={() => deleteList(id)} />
       </form>
+      {!loading && cardData.length > 0 && <Card data={cardData} />}
       {isOpenCard && <CreateCard />}
       {!isOpenCard && (
         <FootContainer>

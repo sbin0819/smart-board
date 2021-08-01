@@ -21,8 +21,12 @@ const ListContainer = styled.div`
 function Board() {
   // mutate 가 안 되기 때문에 react-query로 바꿔줘야 할 거 같음
   const { data: listData, loading, error } = useFetchData('/lists');
+
   if (loading) {
     return <h1>loading</h1>;
+  }
+  if (error) {
+    return <h1>error</h1>;
   }
   return (
     <Container>

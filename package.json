@@ -13,7 +13,8 @@
   "scripts": {
     "server:dev": "cd ./back && nest start --watch",
     "front:dev": "cd ./front && react-scripts start",
-    "dev": "cd ./back && nest start --watch && cd ./front && react-scripts start"
+    "server:mock": "cd ./front && json-server --watch mock.json --port 5000",
+    "dev": "concurrently \"cd ./back && nest start --watch\"  \"cd ./front && react-scripts start\""
   },
   "devDependencies": {
     "concurrently": "^6.2.0"
