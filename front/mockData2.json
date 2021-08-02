@@ -3,28 +3,7 @@
     {
       "id": "list1",
       "title": "abc",
-      "cards": [
-        {
-          "id": "1",
-          "listId": "list1",
-          "title": "card 1"
-        },
-        {
-          "id": "2",
-          "listId": "list1",
-          "title": "card 2"
-        },
-        {
-          "id": "3",
-          "listId": "list1",
-          "title": "card 3"
-        },
-        {
-          "id": "4",
-          "listId": "list1",
-          "title": "card 4"
-        }
-      ]
+      "card": []
     },
     {
       "id": "list2",

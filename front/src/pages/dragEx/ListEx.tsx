@@ -3,13 +3,13 @@ import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useState } from 'react';
 
-import { updateList, deleteList } from '../api/list';
+import { updateList, deleteList } from '../../api/list';
+
+import useFetchData from '../../hooks/useFetchData';
+
+import { ICard } from '../../types/card';
 
 import CreateCard from './CreateCard';
-import useFetchData from '../hooks/useFetchData';
-
-import { ICard } from '../types/card';
-
 import Card from './Card';
 
 const ListContainer = styled.div`
@@ -41,21 +41,10 @@ const FootContainer = styled.div`
 `;
 
 interface IProps {
-  title: string;
-  id: string;
+  data: any;
 }
-function Board({ title, id }: IProps) {
-  const {
-    data: cardData,
-    loading,
-    error,
-  }: { data: ICard[]; loading: any; error: any } = useFetchData(
-    `/cards?listId=${id}`,
-  );
-
-  if (cardData[0]) {
-    console.log(cardData[0]);
-  }
+function Board({ data }: IProps) {
+  const { id, title } = data;
 
   const [newTitle, setNewTitle] = useState(title);
   const [focused, setFocused] = useState(false);
@@ -66,11 +55,6 @@ function Board({ title, id }: IProps) {
 
   const closeAddCard = () => setIsOpenCard(false);
   const openAddCard = () => setIsOpenCard(true);
-
-  if (loading) {
-    return <div>card loading...</div>;
-  }
-
   return (
     <ListContainer>
       <form
@@ -93,7 +77,7 @@ function Board({ title, id }: IProps) {
         />
         <CloseOutlined onClick={() => deleteList(id)} />
       </form>
-      {!loading && cardData.length > 0 && <Card data={cardData} />}
+      {<Card data={data.cards} />}
       {isOpenCard && <CreateCard onClose={closeAddCard} />}
       {!isOpenCard && (
         <FootContainer>
