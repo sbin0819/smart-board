@@ -5,4 +5,3 @@
 - React
 - Context API
 - styled-components
-- Apollo Client
