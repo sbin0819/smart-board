@@ -44,7 +44,7 @@ interface IProps {
   title: string;
   id: string;
 }
-function Board({ title, id }: IProps) {
+function List({ title, id }: IProps) {
   const {
     data: cardData,
     loading,
@@ -107,4 +107,4 @@ function Board({ title, id }: IProps) {
   );
 }
 
-export default Board;
+export default List;

@@ -1,27 +1,6 @@
-import { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect } from 'react';
 import useFetchData from '../hooks/useFetchData';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-
-import styled from 'styled-components';
-
-const items = [
-  { id: 'c1', content: 'first task' },
-  { id: 'c2', content: 'second task' },
-  { id: 'c3', content: 'third task' },
-  { id: 'c4', content: 'fourth task' },
-  { id: 'c5', content: 'fifth task' },
-  { id: 'c6', content: 'sixth task' },
-];
-const mockData = [
-  {
-    id: 'a0',
-    name: 'Requested',
-    items: items,
-  },
-  { id: 'a1', name: 'To do', items: [] },
-  { id: 'a2', name: 'In Progress', items: [] },
-  { id: 'a3', name: 'Done', items: [] },
-];
 
 const onDragEnd = (result: any, columns: any, setColumns: any) => {
   if (!result.destination) return;
@@ -62,26 +41,28 @@ const onDragEnd = (result: any, columns: any, setColumns: any) => {
 };
 
 function Sample() {
-  // const {
-  //   data: boardData,
-  //   loading,
-  //   error,
-  // }: { data: any[]; loading: any; error: any } = useFetchData('/board');
-  const [columns, setColumns] = useState<any>(
-    mockData.reduce((acc: any, curr: any) => {
-      acc[curr.id] = { ...curr };
-      return acc;
-    }, {}),
-  );
-  // useEffect(() => {
-  //   if (!loading) {
-  //     setColumns(boardData);
-  //   }
-  // }, []);
+  const {
+    data: boardData,
+    loading,
+    error,
+  }: { data: any[]; loading: any; error: any } = useFetchData('/board');
+  const [columns, setColumns] = useState<any>({});
 
-  // if (loading) return <div>loading...</div>;
+  useEffect(() => {
+    if (!loading) {
+      setColumns(() =>
+        boardData.reduce((acc: any, curr: any, i) => {
+          acc[curr.id] = { ...curr };
+          return acc;
+        }, {}),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
 
-  console.log(columns);
+  if (loading) return <div>loading...</div>;
+  if (error) return <div>error...</div>;
+
   return (
     <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
       <DragDropContext

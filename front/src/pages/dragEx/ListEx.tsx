@@ -13,6 +13,9 @@ import CreateCard from './CreateCard';
 import Card from './Card';
 
 const ListContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  align-content: flex-start;
   flex: 0 0 auto; // overflow inner display
   width: 284px;
   min-height: 76px;
@@ -41,11 +44,10 @@ const FootContainer = styled.div`
 `;
 
 interface IProps {
-  data: any;
+  title: string;
+  id: string;
 }
-function Board({ data }: IProps) {
-  const { id, title } = data;
-
+function Board({ title, id }: IProps) {
   const [newTitle, setNewTitle] = useState(title);
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
@@ -77,7 +79,7 @@ function Board({ data }: IProps) {
         />
         <CloseOutlined onClick={() => deleteList(id)} />
       </form>
-      {<Card data={data.cards} />}
+      {/* {<Card data={data.cards} />}
       {isOpenCard && <CreateCard onClose={closeAddCard} />}
       {!isOpenCard && (
         <FootContainer>
@@ -86,7 +88,7 @@ function Board({ data }: IProps) {
             <p>Add a Card</p>
           </div>
         </FootContainer>
-      )}
+      )} */}
     </ListContainer>
   );
 }
