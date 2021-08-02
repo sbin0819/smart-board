@@ -7,6 +7,7 @@ import Board from './pages/Board';
 import Sub from './pages/sub';
 import Drag from './pages/drag';
 import Drag2 from './pages/dragEx';
+import Sample from './pages/sample';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route exact path="/sub" component={Sub} />
       <Route exact path="/drag" component={Drag} />
       <Route exact path="/drag2" component={Drag2} />
+      <Route exact path="/sample" component={Sample} />
     </Fragment>
   );
 }

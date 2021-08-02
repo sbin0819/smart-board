@@ -39,6 +39,9 @@ const onDragEnd = (result: any, columns: any, setColumns: any) => {
     const sourceItems = [...sourceColumn.items];
     const destItems = [...destColumn.items];
     const [removed] = sourceItems.splice(source.index, 1);
+    console.log(destColumn);
+    console.log(sourceColumn);
+    console.log(destItems);
     destItems.splice(destination.index, 0, removed);
     setColumns({
       ...columns,
@@ -87,6 +90,7 @@ function App() {
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId}>
                   {(provided, snapshot) => {
+                    console.log('******droppableId********', columnId);
                     return (
                       <div
                         {...provided.droppableProps}
@@ -108,6 +112,7 @@ function App() {
                               index={index}
                             >
                               {(provided, snapshot) => {
+                                console.log('draggableId', item.id);
                                 return (
                                   <div
                                     ref={provided.innerRef}
