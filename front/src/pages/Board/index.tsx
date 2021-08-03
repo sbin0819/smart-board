@@ -60,7 +60,7 @@ const onDragEnd = (result: any, columns: any, setColumns: any) => {
 };
 
 function Board() {
-  const { data: listData, loading, error } = useFetchData('/board');
+  const { data: listData, loading, error } = useFetchData('/lists');
   const [columns, setColumns] = useState<any>({});
 
   useEffect(() => {

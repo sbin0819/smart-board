@@ -18,8 +18,9 @@ const ListContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 5px;
     .list_title {
-      width: 80%;
       background: none;
       border: none;
       :focus {
@@ -61,7 +62,7 @@ function List({ name, id, items, provided }: IProps) {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          updateList(id, { id, title: newTitle });
+          updateList(id, { id, name: newTitle, items });
         }}
       >
         <Input
