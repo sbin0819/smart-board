@@ -1,30 +1,31 @@
-import { Input } from 'antd';
-import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
-import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { updateList, deleteList } from '../api/list';
+import { Draggable } from 'react-beautiful-dnd';
 
-import CreateCard from './CreateCard';
-import useFetchData from '../hooks/useFetchData';
-
-import { ICard } from '../types/card';
-
+import styled from 'styled-components';
+import { Input } from 'antd';
+import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import Card from './Card';
+import CreateCard from './CreateCard';
 
 const ListContainer = styled.div`
   flex: 0 0 auto; // overflow inner display
   width: 284px;
   min-height: 76px;
-  background: #ececec;
-  padding: 5px;
-  border-radius: 8px;
-  .list_title {
-    width: 80%;
-    background: none;
-    border: none;
-    :focus {
-      background: #fff;
+  padding: 10px 6px;
+  .list_form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 5px;
+    .list_title {
+      background: none;
+      border: none;
+      :focus {
+        background: #fff;
+      }
     }
   }
 `;
@@ -41,49 +42,48 @@ const FootContainer = styled.div`
 `;
 
 interface IProps {
-  title: string;
-  id: string;
+  name: any;
+  id: any;
+  items: any;
+  provided: any;
 }
-function List({ title, id }: IProps) {
-  const {
-    data: cardData,
-    loading,
-    error,
-  }: { data: ICard[]; loading: any; error: any } = useFetchData(
-    `/cards?listId=${id}`,
-  );
+function List({ name, id, items, provided }: IProps) {
+  const ref = useRef<any>();
 
-  if (cardData[0]) {
-    console.log(cardData[0]);
-  }
-
-  const [newTitle, setNewTitle] = useState(title);
+  const [newTitle, setNewTitle] = useState(name);
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
 
-  const [isOpenCard, setIsOpenCard] = useState(false);
+  const [isOpenCard, setisOpenCard] = useState(false);
+  const closeAddCard = () => setisOpenCard(false);
 
-  const closeAddCard = () => setIsOpenCard(false);
-  const openAddCard = () => setIsOpenCard(true);
-
-  if (loading) {
-    return <div>card loading...</div>;
-  }
+  useEffect(() => {
+    const checkIfClickedOutside = (e: any) => {
+      if (isOpenCard && ref.current && !ref.current.contains(e.target)) {
+        setisOpenCard(false);
+      }
+    };
+    document.addEventListener('mousedown', checkIfClickedOutside);
+    return () => {
+      document.removeEventListener('mousedown', checkIfClickedOutside);
+    };
+  }, [isOpenCard]);
 
   return (
     <ListContainer>
       <form
+        className="list_form"
         onSubmit={(e) => {
           e.preventDefault();
-          updateList(id, { id, title: newTitle });
+          updateList(id, { id, name: newTitle, items });
         }}
       >
         <Input
           className="list_title"
           name="list_title"
           placeholder="Enter list title..."
-          value={focused ? newTitle : title}
+          value={focused ? newTitle : name}
           onFocus={onFocus}
           onBlur={onBlur}
           onChange={(e) => {
@@ -93,11 +93,41 @@ function List({ title, id }: IProps) {
         />
         <CloseOutlined onClick={() => deleteList(id)} />
       </form>
-      {!loading && cardData.length > 0 && <Card data={cardData} />}
-      {isOpenCard && <CreateCard onClose={closeAddCard} />}
+      {items.map((item: any, index: number) => {
+        return (
+          <Draggable key={item.id} draggableId={item.id} index={index}>
+            {(provided, snapshot) => {
+              return (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.draggableProps}
+                  {...provided.dragHandleProps}
+                  style={{
+                    backgroundColor: snapshot.isDragging ? '#fde0e0' : '#fff',
+                    ...provided.draggableProps.style,
+                  }}
+                >
+                  <Card data={item} />
+                </div>
+              );
+            }}
+          </Draggable>
+        );
+      })}
+      {provided.placeholder}
+      {isOpenCard && (
+        <div ref={ref}>
+          <CreateCard
+            listId={id}
+            listName={name}
+            cards={items}
+            onClose={closeAddCard}
+          />
+        </div>
+      )}
       {!isOpenCard && (
         <FootContainer>
-          <div className="add_card" onClick={() => openAddCard()}>
+          <div className="add_card" onClick={() => setisOpenCard(true)}>
             <PlusOutlined />
             <p>Add a Card</p>
           </div>

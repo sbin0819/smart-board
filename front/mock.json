@@ -1,5 +1,47 @@
 {
-  "board": [
+  "lists": [
+    {
+      "id": "a1",
+      "name": "req",
+      "items": [
+        {
+          "id": "c1",
+          "content": "first task"
+        },
+        {
+          "id": "c2",
+          "content": "second task"
+        },
+        {
+          "id": "c3",
+          "content": "third task"
+        },
+        {
+          "id": "c4",
+          "content": "fourth task"
+        },
+        {
+          "id": "c5",
+          "content": "fifth task"
+        },
+        {
+          "id": "c6",
+          "content": "sixth task"
+        }
+      ]
+    },
+    {
+      "id": "836655d8-6ffe-41d6-bf2b-498fc66cc365",
+      "name": "To do",
+      "items": [
+        {
+          "id": "3212abcd-dec0-4968-8df4-11e8eb8910eb",
+          "content": "hello\n"
+        }
+      ]
+    }
+  ],
+  "lists-sample": [
     {
       "id": "a1",
       "name": "Requested",
@@ -46,53 +88,5 @@
       "items": []
     }
   ],
-  "lists": [
-    {
-      "id": "list1",
-      "title": "edit"
-    },
-    {
-      "id": "list2",
-      "title": "bcd",
-      "card": []
-    }
-  ],
-  "cards": [
-    {
-      "id": "card1",
-      "listId": "list1",
-      "card": [
-        {
-          "id": "1",
-          "title": "card 1"
-        },
-        {
-          "id": "2",
-          "title": "card 2"
-        },
-        {
-          "id": "3",
-          "title": "card 3"
-        },
-        {
-          "id": "4",
-          "title": "card 4"
-        }
-      ]
-    },
-    {
-      "id": "card2",
-      "listId": "list3",
-      "card": [
-        {
-          "id": "ccc",
-          "title": "card test"
-        },
-        {
-          "id": "ddd",
-          "title": "card test"
-        }
-      ]
-    }
-  ]
+  "cards": []
 }
