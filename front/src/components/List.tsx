@@ -9,6 +9,8 @@ import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import Card from './Card';
 import CreateCard from './CreateCard';
 
+import useClickOutside from '../hooks/useClickOutside';
+
 const ListContainer = styled.div`
   flex: 0 0 auto; // overflow inner display
   width: 284px;
@@ -48,8 +50,6 @@ interface IProps {
   provided: any;
 }
 function List({ name, id, items, provided }: IProps) {
-  const ref = useRef<any>();
-
   const [newTitle, setNewTitle] = useState(name);
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
@@ -58,17 +58,8 @@ function List({ name, id, items, provided }: IProps) {
   const [isOpenCard, setisOpenCard] = useState(false);
   const closeAddCard = () => setisOpenCard(false);
 
-  useEffect(() => {
-    const checkIfClickedOutside = (e: any) => {
-      if (isOpenCard && ref.current && !ref.current.contains(e.target)) {
-        setisOpenCard(false);
-      }
-    };
-    document.addEventListener('mousedown', checkIfClickedOutside);
-    return () => {
-      document.removeEventListener('mousedown', checkIfClickedOutside);
-    };
-  }, [isOpenCard]);
+  const ref = useRef<any>();
+  useClickOutside(ref, closeAddCard);
 
   return (
     <ListContainer>
@@ -127,7 +118,12 @@ function List({ name, id, items, provided }: IProps) {
       )}
       {!isOpenCard && (
         <FootContainer>
-          <div className="add_card" onClick={() => setisOpenCard(true)}>
+          <div
+            className="add_card"
+            onClick={() => {
+              setisOpenCard(true);
+            }}
+          >
             <PlusOutlined />
             <p>Add a Card</p>
           </div>
