@@ -1,16 +1,14 @@
 import { Input } from 'antd';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 
-import { updateList, deleteList } from '../api/list';
+import { updateList, deleteList } from '../../api/list';
 
 import CreateCard from './CreateCard';
-import useFetchData from '../hooks/useFetchData';
-
-import { ICard } from '../types/card';
-
 import Card from './Card';
+
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 const ListContainer = styled.div`
   flex: 0 0 auto; // overflow inner display
@@ -44,20 +42,8 @@ interface IProps {
   title: string;
   id: string;
 }
-function List({ title, id }: IProps) {
-  const {
-    data: cardData,
-    loading,
-    error,
-  }: { data: ICard[]; loading: any; error: any } = useFetchData(
-    `/cards?listId=${id}`,
-  );
-
-  if (cardData[0]) {
-    console.log(cardData[0]);
-  }
-
-  const [newTitle, setNewTitle] = useState(title);
+function Board({ name, id, items, provided, snapshot }: any) {
+  const [newTitle, setNewTitle] = useState(name);
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
@@ -66,11 +52,6 @@ function List({ title, id }: IProps) {
 
   const closeAddCard = () => setIsOpenCard(false);
   const openAddCard = () => setIsOpenCard(true);
-
-  if (loading) {
-    return <div>card loading...</div>;
-  }
-
   return (
     <ListContainer>
       <form
@@ -83,7 +64,7 @@ function List({ title, id }: IProps) {
           className="list_title"
           name="list_title"
           placeholder="Enter list title..."
-          value={focused ? newTitle : title}
+          value={focused ? newTitle : name}
           onFocus={onFocus}
           onBlur={onBlur}
           onChange={(e) => {
@@ -93,7 +74,29 @@ function List({ title, id }: IProps) {
         />
         <CloseOutlined onClick={() => deleteList(id)} />
       </form>
-      {!loading && cardData.length > 0 && <Card data={cardData} />}
+      {/* {items.map((item: any, idx: number) => (
+        <Fragment key={idx}>
+          <Card data={item} />
+        </Fragment>
+      ))} */}
+      {items.map((item: any, index: number) => {
+        return (
+          <Draggable key={item.id} draggableId={item.id} index={index}>
+            {(provided, snapshot) => {
+              return (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.draggableProps}
+                  {...provided.dragHandleProps}
+                >
+                  <Card data={item} />
+                </div>
+              );
+            }}
+          </Draggable>
+        );
+      })}
+      {provided.placeholder}
       {isOpenCard && <CreateCard onClose={closeAddCard} />}
       {!isOpenCard && (
         <FootContainer>
@@ -107,4 +110,4 @@ function List({ title, id }: IProps) {
   );
 }
 
-export default List;
+export default Board;

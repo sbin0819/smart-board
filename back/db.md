@@ -1,60 +1,32 @@
+```json
 {
-  "board": [
+  "lists": [
     {
-      "id": "a1",
-      "name": "Requested",
-      "items": [
+      "id": "list1",
+      "title": "abc",
+      "cards": [
         {
-          "id": "c1",
-          "content": "first task"
+          "id": "1",
+          "title": "card 1"
         },
         {
-          "id": "c2",
-          "content": "second task"
+          "id": "2",
+          "title": "card 2"
         },
         {
-          "id": "c3",
-          "content": "third task"
+          "id": "3",
+          "title": "card 3"
         },
         {
-          "id": "c4",
-          "content": "fourth task"
-        },
-        {
-          "id": "c5",
-          "content": "fifth task"
-        },
-        {
-          "id": "c6",
-          "content": "sixth task"
+          "id": "4",
+          "title": "card 4"
         }
       ]
     },
     {
-      "id": "a2",
-      "name": "To do",
-      "items": []
-    },
-    {
-      "id": "a3",
-      "name": "In Progress",
-      "items": []
-    },
-    {
-      "id": "a4",
-      "name": "Done",
-      "items": []
-    }
-  ],
-  "lists": [
-    {
-      "id": "list1",
-      "title": "edit"
-    },
-    {
       "id": "list2",
       "title": "bcd",
-      "card": []
+      "cards": []
     }
   ],
   "cards": [
@@ -96,3 +68,4 @@
     }
   ]
 }
+```
