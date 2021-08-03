@@ -14,7 +14,6 @@ const ListContainer = styled.div`
   flex: 0 0 auto; // overflow inner display
   width: 284px;
   min-height: 76px;
-  background: #ececec;
   padding: 5px;
   border-radius: 8px;
   .list_title {
@@ -42,7 +41,7 @@ interface IProps {
   title: string;
   id: string;
 }
-function Board({ name, id, items, provided, snapshot }: any) {
+function Board({ name, id, items, provided }: any) {
   const [newTitle, setNewTitle] = useState(name);
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
@@ -74,11 +73,6 @@ function Board({ name, id, items, provided, snapshot }: any) {
         />
         <CloseOutlined onClick={() => deleteList(id)} />
       </form>
-      {/* {items.map((item: any, idx: number) => (
-        <Fragment key={idx}>
-          <Card data={item} />
-        </Fragment>
-      ))} */}
       {items.map((item: any, index: number) => {
         return (
           <Draggable key={item.id} draggableId={item.id} index={index}>
@@ -88,6 +82,10 @@ function Board({ name, id, items, provided, snapshot }: any) {
                   ref={provided.innerRef}
                   {...provided.draggableProps}
                   {...provided.dragHandleProps}
+                  style={{
+                    backgroundColor: snapshot.isDragging ? '#fde0e0' : '#fff',
+                    ...provided.draggableProps.style,
+                  }}
                 >
                   <Card data={item} />
                 </div>

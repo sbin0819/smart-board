@@ -1,11 +1,10 @@
 import List from './ListEx';
-import CreateList from '../../components/CreateList';
 import styled from 'styled-components';
 
 import useFetchData from '../../hooks/useFetchData';
-import { Fragment, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 const Container = styled.div`
   padding: 20px;
@@ -21,7 +20,7 @@ const ListContainer = styled.div`
 `;
 
 const onDragEnd = (result: any, columns: any, setColumns: any) => {
-  console.log(result);
+  console.log(columns);
   if (!result.destination) return;
   const { source, destination } = result;
 
@@ -98,12 +97,13 @@ function Board() {
                         key={columnId}
                         {...provided.droppableProps}
                         ref={provided.innerRef}
+                        style={{
+                          background: snapshot.isDraggingOver
+                            ? 'lightblue'
+                            : '#ececec',
+                        }}
                       >
-                        <List
-                          {...column}
-                          provided={provided}
-                          snapshot={snapshot}
-                        />
+                        <List {...column} provided={provided} />
                       </div>
                     );
                   }}

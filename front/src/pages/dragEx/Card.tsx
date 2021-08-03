@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import CardDetail from './CardDetail';
 
 const Container = styled.div`
-  background: #fff;
   height: 32px;
   border: 1px solid #d9d9d9;
   margin-bottom: 4px;
