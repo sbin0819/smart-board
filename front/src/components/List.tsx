@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { updateList, deleteList } from '../api/list';
 import { Draggable } from 'react-beautiful-dnd';
@@ -48,15 +48,28 @@ interface IProps {
   provided: any;
 }
 function List({ name, id, items, provided }: IProps) {
+  const ref = useRef<any>();
+
   const [newTitle, setNewTitle] = useState(name);
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
 
-  const [isOpenCard, setIsOpenCard] = useState(false);
+  const [isOpenCard, setisOpenCard] = useState(false);
+  const closeAddCard = () => setisOpenCard(false);
 
-  const closeAddCard = () => setIsOpenCard(false);
-  const openAddCard = () => setIsOpenCard(true);
+  useEffect(() => {
+    const checkIfClickedOutside = (e: any) => {
+      if (isOpenCard && ref.current && !ref.current.contains(e.target)) {
+        setisOpenCard(false);
+      }
+    };
+    document.addEventListener('mousedown', checkIfClickedOutside);
+    return () => {
+      document.removeEventListener('mousedown', checkIfClickedOutside);
+    };
+  }, [isOpenCard]);
+
   return (
     <ListContainer>
       <form
@@ -103,16 +116,18 @@ function List({ name, id, items, provided }: IProps) {
       })}
       {provided.placeholder}
       {isOpenCard && (
-        <CreateCard
-          listId={id}
-          listName={name}
-          cards={items}
-          onClose={closeAddCard}
-        />
+        <div ref={ref}>
+          <CreateCard
+            listId={id}
+            listName={name}
+            cards={items}
+            onClose={closeAddCard}
+          />
+        </div>
       )}
       {!isOpenCard && (
         <FootContainer>
-          <div className="add_card" onClick={() => openAddCard()}>
+          <div className="add_card" onClick={() => setisOpenCard(true)}>
             <PlusOutlined />
             <p>Add a Card</p>
           </div>
