@@ -25,7 +25,6 @@ function Card({ data }: IProps) {
   const [detailInfo, setDetailInfo] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const onOpenCardDetail = () => setIsOpen(true);
-
   const onCloseCardDetail = () => setIsOpen(false);
 
   return (
