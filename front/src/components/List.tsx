@@ -14,7 +14,7 @@ const ListContainer = styled.div`
   width: 284px;
   min-height: 76px;
   padding: 10px 6px;
-  form {
+  .list_form {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -60,6 +60,7 @@ function List({ name, id, items, provided }: IProps) {
   return (
     <ListContainer>
       <form
+        className="list_form"
         onSubmit={(e) => {
           e.preventDefault();
           updateList(id, { id, name: newTitle, items });
@@ -101,7 +102,14 @@ function List({ name, id, items, provided }: IProps) {
         );
       })}
       {provided.placeholder}
-      {isOpenCard && <CreateCard onClose={closeAddCard} />}
+      {isOpenCard && (
+        <CreateCard
+          listId={id}
+          listName={name}
+          cards={items}
+          onClose={closeAddCard}
+        />
+      )}
       {!isOpenCard && (
         <FootContainer>
           <div className="add_card" onClick={() => openAddCard()}>

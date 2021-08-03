@@ -33,7 +33,12 @@
     {
       "id": "836655d8-6ffe-41d6-bf2b-498fc66cc365",
       "name": "To do",
-      "items": []
+      "items": [
+        {
+          "id": "3212abcd-dec0-4968-8df4-11e8eb8910eb",
+          "content": "hello\n"
+        }
+      ]
     }
   ],
   "lists-sample": [

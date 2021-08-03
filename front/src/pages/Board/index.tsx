@@ -1,10 +1,11 @@
+import { useState, useEffect } from 'react';
+
 import List from '../../components/List';
 import CreateList from '../../components/CreateList';
 
 import styled from 'styled-components';
 
 import useFetchData from '../../hooks/useFetchData';
-import { useState, useEffect } from 'react';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
