@@ -15,12 +15,13 @@ const Container = styled.div`
 
 const ListContainer = styled.div`
   display: flex;
+  align-items: flex-start;
+  align-content: flex-start;
   gap: 20px;
-  /* align-items: flex-start;
-  align-content: flex-start; */
 `;
 
 const onDragEnd = (result: any, columns: any, setColumns: any) => {
+  console.log(result);
   if (!result.destination) return;
   const { source, destination } = result;
 
@@ -83,21 +84,35 @@ function Board() {
 
   return (
     <Container>
-      <ListContainer>
-        <DragDropContext
-          onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
-        >
+      <DragDropContext
+        onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+      >
+        <ListContainer>
           {Object.entries(columns).map(
             ([columnId, column]: [any, any], index) => {
               return (
-                <Fragment key={columnId}>
-                  <List title={column.name} id={column.id} />
-                </Fragment>
+                <Droppable droppableId={columnId} key={columnId}>
+                  {(provided, snapshot) => {
+                    return (
+                      <div
+                        key={columnId}
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                      >
+                        <List
+                          {...column}
+                          provided={provided}
+                          snapshot={snapshot}
+                        />
+                      </div>
+                    );
+                  }}
+                </Droppable>
               );
             },
           )}
-        </DragDropContext>
-      </ListContainer>
+        </ListContainer>
+      </DragDropContext>
     </Container>
   );
 }
@@ -114,3 +129,7 @@ export default Board;
 <CreateList />
 </ListContainer> */
 }
+
+//    <Fragment key={columnId}>
+// <List {...column} />
+// </Fragment>

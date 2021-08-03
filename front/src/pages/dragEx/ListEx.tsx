@@ -1,21 +1,16 @@
 import { Input } from 'antd';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 
 import { updateList, deleteList } from '../../api/list';
-
-import useFetchData from '../../hooks/useFetchData';
-
-import { ICard } from '../../types/card';
 
 import CreateCard from './CreateCard';
 import Card from './Card';
 
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+
 const ListContainer = styled.div`
-  display: flex;
-  align-items: flex-start;
-  align-content: flex-start;
   flex: 0 0 auto; // overflow inner display
   width: 284px;
   min-height: 76px;
@@ -47,8 +42,8 @@ interface IProps {
   title: string;
   id: string;
 }
-function Board({ title, id }: IProps) {
-  const [newTitle, setNewTitle] = useState(title);
+function Board({ name, id, items, provided, snapshot }: any) {
+  const [newTitle, setNewTitle] = useState(name);
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
@@ -69,7 +64,7 @@ function Board({ title, id }: IProps) {
           className="list_title"
           name="list_title"
           placeholder="Enter list title..."
-          value={focused ? newTitle : title}
+          value={focused ? newTitle : name}
           onFocus={onFocus}
           onBlur={onBlur}
           onChange={(e) => {
@@ -79,7 +74,29 @@ function Board({ title, id }: IProps) {
         />
         <CloseOutlined onClick={() => deleteList(id)} />
       </form>
-      {/* {<Card data={data.cards} />}
+      {/* {items.map((item: any, idx: number) => (
+        <Fragment key={idx}>
+          <Card data={item} />
+        </Fragment>
+      ))} */}
+      {items.map((item: any, index: number) => {
+        return (
+          <Draggable key={item.id} draggableId={item.id} index={index}>
+            {(provided, snapshot) => {
+              return (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.draggableProps}
+                  {...provided.dragHandleProps}
+                >
+                  <Card data={item} />
+                </div>
+              );
+            }}
+          </Draggable>
+        );
+      })}
+      {provided.placeholder}
       {isOpenCard && <CreateCard onClose={closeAddCard} />}
       {!isOpenCard && (
         <FootContainer>
@@ -88,7 +105,7 @@ function Board({ title, id }: IProps) {
             <p>Add a Card</p>
           </div>
         </FootContainer>
-      )} */}
+      )}
     </ListContainer>
   );
 }

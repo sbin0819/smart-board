@@ -1,7 +1,5 @@
 import { useState } from 'react';
 
-import { ICard } from '../../types/card';
-
 import { EditOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 
@@ -20,7 +18,7 @@ const Container = styled.div`
 `;
 
 interface IProps {
-  data: any[];
+  data: any;
 }
 
 function Card({ data }: IProps) {
@@ -33,20 +31,17 @@ function Card({ data }: IProps) {
   return (
     <>
       {isOpen && <CardDetail data={detailInfo} onClose={onCloseCardDetail} />}
-      {data?.map((d, idx) => (
-        <>
-          <Container
-            key={idx}
-            onClick={() => {
-              setDetailInfo({ ...d });
-              onOpenCardDetail();
-            }}
-          >
-            <div>{d.title}</div>
-            <EditOutlined />
-          </Container>
-        </>
-      ))}
+      <>
+        <Container
+          onClick={() => {
+            setDetailInfo({ ...data });
+            onOpenCardDetail();
+          }}
+        >
+          <div>{data.content}</div>
+          <EditOutlined />
+        </Container>
+      </>
     </>
   );
 }
