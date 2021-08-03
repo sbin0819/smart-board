@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 
+import { Link } from 'react-router-dom';
+
 import List from '../../components/List';
 import CreateList from '../../components/CreateList';
 
@@ -66,6 +68,7 @@ function Board() {
 
   useEffect(() => {
     if (!loading) {
+      // ? sortby updatedAt
       setColumns(() =>
         listData.reduce((acc: any, curr: any, i) => {
           acc[curr.id] = { ...curr };
