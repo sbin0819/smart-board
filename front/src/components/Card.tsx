@@ -1,25 +1,27 @@
 import { useState } from 'react';
 
-import { ICard } from '../types/card';
-
-import { EditOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+import { EditOutlined } from '@ant-design/icons';
 
 import CardDetail from './CardDetail';
 
 const Container = styled.div`
-  background: #fff;
   height: 32px;
   border: 1px solid #d9d9d9;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 12px;
   cursor: pointer;
+  border-radius: 4px;
 `;
 
-function Card({ data }: { data: ICard[] }) {
+interface IProps {
+  data: any;
+}
+
+function Card({ data }: IProps) {
   const [detailInfo, setDetailInfo] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const onOpenCardDetail = () => setIsOpen(true);
@@ -29,20 +31,15 @@ function Card({ data }: { data: ICard[] }) {
   return (
     <>
       {isOpen && <CardDetail data={detailInfo} onClose={onCloseCardDetail} />}
-      {data[0].card.map((d, idx) => (
-        <>
-          <Container
-            key={idx}
-            onClick={() => {
-              setDetailInfo({ ...d });
-              onOpenCardDetail();
-            }}
-          >
-            <div>{d.title}</div>
-            <EditOutlined />
-          </Container>
-        </>
-      ))}
+      <Container
+        onClick={() => {
+          setDetailInfo({ ...data });
+          onOpenCardDetail();
+        }}
+      >
+        <div>{data.content}</div>
+        <EditOutlined />
+      </Container>
     </>
   );
 }
