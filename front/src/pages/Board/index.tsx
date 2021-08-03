@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 
-import { Link } from 'react-router-dom';
-
 import List from '../../components/List';
 import CreateList from '../../components/CreateList';
 
