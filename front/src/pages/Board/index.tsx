@@ -1,3 +1,4 @@
+import { useParams } from 'react-router';
 import { useState, useEffect } from 'react';
 
 import List from '../../components/List';
@@ -8,6 +9,8 @@ import styled from 'styled-components';
 import useFetchData from '../../hooks/useFetchData';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+
+import Header from '../../layouts/Header';
 
 const Container = styled.div`
   padding: 20px;
@@ -61,6 +64,7 @@ const onDragEnd = (result: any, columns: any, setColumns: any) => {
 };
 
 function Board() {
+  const { title }: { title: string } = useParams();
   const { data: listData, loading, error } = useFetchData('/lists');
   const [columns, setColumns] = useState<any>({});
 
@@ -83,42 +87,44 @@ function Board() {
   if (error) {
     return <h1>error</h1>;
   }
-
   return (
-    <Container>
-      <DragDropContext
-        onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
-      >
-        <ListContainer>
-          {Object.entries(columns).map(
-            ([columnId, column]: [any, any], index) => {
-              return (
-                <Droppable droppableId={columnId} key={columnId}>
-                  {(provided, snapshot) => {
-                    return (
-                      <div
-                        key={columnId}
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                        style={{
-                          borderRadius: 8,
-                          background: snapshot.isDraggingOver
-                            ? 'lightblue'
-                            : '#ececec',
-                        }}
-                      >
-                        <List {...column} provided={provided} />
-                      </div>
-                    );
-                  }}
-                </Droppable>
-              );
-            },
-          )}
-          <CreateList />
-        </ListContainer>
-      </DragDropContext>
-    </Container>
+    <>
+      <Header title={title} />
+      <Container>
+        <DragDropContext
+          onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+        >
+          <ListContainer>
+            {Object.entries(columns).map(
+              ([columnId, column]: [any, any], index) => {
+                return (
+                  <Droppable droppableId={columnId} key={columnId}>
+                    {(provided, snapshot) => {
+                      return (
+                        <div
+                          key={columnId}
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                          style={{
+                            borderRadius: 8,
+                            background: snapshot.isDraggingOver
+                              ? 'lightblue'
+                              : '#ececec',
+                          }}
+                        >
+                          <List {...column} provided={provided} />
+                        </div>
+                      );
+                    }}
+                  </Droppable>
+                );
+              },
+            )}
+            <CreateList />
+          </ListContainer>
+        </DragDropContext>
+      </Container>
+    </>
   );
 }
 

@@ -1,11 +1,11 @@
 import { PageHeader, Tag, Button, Statistic, Descriptions, Row } from 'antd';
 
-function Header() {
+function Header({ title }: { title: string }) {
   return (
     <PageHeader
       className="site-page-header"
       onBack={() => window.history.back()}
-      title="Title"
+      title={title}
       subTitle="This is a subtitle"
       extra={[
         <Button key="3">Operation</Button>,
