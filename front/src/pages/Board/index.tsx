@@ -63,6 +63,8 @@ const onDragEnd = (result: any, columns: any, setColumns: any) => {
   }
 };
 
+const onDrag2 = (result: any, col: any, setCol: any) => {};
+
 function Board() {
   const { title }: { title: string } = useParams();
   const { data: listData, loading, error } = useFetchData('/lists');
@@ -91,20 +93,20 @@ function Board() {
     <>
       <Header title={title} />
       <Container>
-        <DragDropContext
-          onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
-        >
-          <ListContainer>
+        <ListContainer>
+          <DragDropContext
+            onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
+          >
             {Object.entries(columns).map(
               ([columnId, column]: [any, any], index) => {
                 return (
                   <Droppable droppableId={columnId} key={columnId}>
-                    {(provided, snapshot) => {
+                    {(cardProvided, snapshot) => {
                       return (
                         <div
                           key={columnId}
-                          {...provided.droppableProps}
-                          ref={provided.innerRef}
+                          {...cardProvided.droppableProps}
+                          ref={cardProvided.innerRef}
                           style={{
                             borderRadius: 8,
                             background: snapshot.isDraggingOver
@@ -112,7 +114,7 @@ function Board() {
                               : '#ececec',
                           }}
                         >
-                          <List {...column} provided={provided} />
+                          <List {...column} provided={cardProvided} />
                         </div>
                       );
                     }}
@@ -121,8 +123,8 @@ function Board() {
               },
             )}
             <CreateList />
-          </ListContainer>
-        </DragDropContext>
+          </DragDropContext>
+        </ListContainer>
       </Container>
     </>
   );
