@@ -3,8 +3,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './users/users.module';
-import { User } from './users/user.entity';
+import { BoardsModule } from './boards/boards.module';
+import { ListsModule } from './lists/lists.module';
+import { CardsModule } from './cards/cards.module';
+
+import { Board } from './boards/entities/board.entity';
+import { List } from './lists/entities/list.entity';
+import { Card } from './cards/entities/card.entity';
 
 @Module({
   imports: [
@@ -15,10 +20,12 @@ import { User } from './users/user.entity';
       username: 'root',
       password: 'gktmqls1',
       database: 'nest',
-      entities: [User],
+      entities: [Board, List, Card],
       synchronize: true,
     }),
-    UsersModule,
+    BoardsModule,
+    ListsModule,
+    CardsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
