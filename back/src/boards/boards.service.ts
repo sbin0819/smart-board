@@ -18,7 +18,9 @@ export class BoardsService {
   }
 
   async findAll() {
-    const boards = await this.boardRepository.find();
+    const boards = await this.boardRepository.find({
+      relations: ['lists', 'lists.cards'],
+    });
     return boards;
   }
 

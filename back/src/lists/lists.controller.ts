@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ListsService } from './lists.service';
 import { CreateListDto } from './dto/create-list.dto';
 import { UpdateListDto } from './dto/update-list.dto';
@@ -7,9 +15,9 @@ import { UpdateListDto } from './dto/update-list.dto';
 export class ListsController {
   constructor(private readonly listsService: ListsService) {}
 
-  @Post()
-  create(@Body() createListDto: CreateListDto) {
-    return this.listsService.create(createListDto);
+  @Post('board/:id')
+  create(@Param('id') boardId: string, @Body() createListDto: CreateListDto) {
+    return this.listsService.create(boardId, createListDto);
   }
 
   @Get()
