@@ -2,14 +2,33 @@ import { Injectable } from '@nestjs/common';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { Card } from './entities/card.entity';
+import { List } from 'src/lists/entities/list.entity';
 @Injectable()
 export class CardsService {
-  create(createCardDto: CreateCardDto) {
+  constructor(
+    @InjectRepository(Card)
+    private cardRepository: Repository<Card>,
+    @InjectRepository(List)
+    private listRepository: Repository<List>,
+  ) {}
+
+  async create(createCardDto: CreateCardDto) {
+    const list = await this.listRepository.findOne({ where: { id: 1 } });
+    const card = await this.cardRepository.create({
+      ...createCardDto,
+      list,
+    });
+    await this.cardRepository.save(card);
     return 'This action adds a new card';
   }
 
-  findAll() {
-    return `This action returns all cards`;
+  async findAll() {
+    const cards = await this.cardRepository.find();
+    return cards.map((card) => card);
   }
 
   findOne(id: number) {

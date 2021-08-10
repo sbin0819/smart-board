@@ -20,6 +20,7 @@ import { Card } from './cards/entities/card.entity';
       username: 'root',
       password: 'gktmqls1',
       database: 'nest',
+      autoLoadEntities: true,
       entities: [Board, List, Card],
       synchronize: true,
     }),
