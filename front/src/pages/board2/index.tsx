@@ -30,16 +30,16 @@ const onDragEnd = (result: any, columns: any, setColumns: any) => {
     return;
   }
 
-  /*
-  1 object to arr
-  2 순서
-  3 arr to object
-  */
   if (result.type === 'COLUMN') {
     const sourceIdx = source.index;
     const destinIdx = destination.index;
-    // console.log(Object.entries(columns));
-
+    // setColumns((prevState: any) => {
+    //   let data = [...prevState];
+    //   let temp = data[sourceIdx];
+    //   data[sourceIdx] = data[destinIdx];
+    //   data[destinIdx] = temp;
+    //   return data;
+    // });
     return;
   }
 
@@ -79,18 +79,19 @@ const onDragEnd = (result: any, columns: any, setColumns: any) => {
 
 function Board() {
   const { title }: { title: string } = useParams();
-  const { data: listData, loading, error } = useFetchData('/lists');
+  const { data: boardData, loading, error } = useFetchData('/lists');
   const [columns, setColumns] = useState<any>({});
 
   useEffect(() => {
     if (!loading) {
       // ? sortby updatedAt
       setColumns(() =>
-        listData.reduce((acc: any, curr: any, i) => {
+        boardData.reduce((acc: any, curr: any, i) => {
           acc[curr.id] = { ...curr };
           return acc;
         }, {}),
       );
+      // setColumns(boardData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
@@ -110,23 +111,21 @@ function Board() {
         <Droppable droppableId="board" type="COLUMN" direction="horizontal">
           {(provided) => (
             <Container ref={provided.innerRef} {...provided.droppableProps}>
-              {Object.entries(columns).map(
-                ([columnId, column]: [any, any], index) => {
-                  return (
-                    <Draggable draggableId={columnId} index={index} key={index}>
-                      {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
-                          <List columnId={columnId} {...column} />
-                        </div>
-                      )}
-                    </Draggable>
-                  );
-                },
-              )}
+              {columns.map((column: any, index: number) => {
+                return (
+                  <Draggable draggableId={column.id} index={index} key={index}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <List columnId={column.id} {...column} />
+                      </div>
+                    )}
+                  </Draggable>
+                );
+              })}
               {provided.placeholder}
               <CreateList />
             </Container>

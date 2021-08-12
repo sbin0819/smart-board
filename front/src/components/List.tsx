@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 import { updateList, deleteList } from '../api/list';
-import { Draggable } from 'react-beautiful-dnd';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 import styled from 'styled-components';
 import { Input } from 'antd';
@@ -44,12 +44,12 @@ const FootContainer = styled.div`
 `;
 
 interface IProps {
+  columnId: string;
   name: any;
   id: any;
   items: any;
-  provided: any;
 }
-function List({ name, id, items, provided }: IProps) {
+function List({ columnId, name, id, items }: IProps) {
   const [newTitle, setNewTitle] = useState(name);
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
@@ -62,74 +62,92 @@ function List({ name, id, items, provided }: IProps) {
   useClickOutside(ref, closeAddCard);
 
   return (
-    <ListContainer>
-      <form
-        className="list_form"
-        onSubmit={(e) => {
-          e.preventDefault();
-          updateList(id, { id, name: newTitle, items });
-        }}
-      >
-        <Input
-          className="list_title"
-          name="list_title"
-          placeholder="Enter list title..."
-          value={focused ? newTitle : name}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          onChange={(e) => {
-            const { value } = e.target;
-            setNewTitle(value);
-          }}
-        />
-        <CloseOutlined onClick={() => deleteList(id)} />
-      </form>
-      {items.map((item: any, index: number) => {
+    <Droppable droppableId={columnId} key={columnId}>
+      {(provided, snapshot) => {
         return (
-          <Draggable key={item.id} draggableId={item.id} index={index}>
-            {(provided, snapshot) => {
-              return (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  {...provided.dragHandleProps}
-                  style={{
-                    backgroundColor: snapshot.isDragging ? '#fde0e0' : '#fff',
-                    ...provided.draggableProps.style,
-                  }}
-                >
-                  <Card data={item} />
-                </div>
-              );
-            }}
-          </Draggable>
-        );
-      })}
-      {provided.placeholder}
-      {isOpenCard && (
-        <div ref={ref}>
-          <CreateCard
-            listId={id}
-            listName={name}
-            cards={items}
-            onClose={closeAddCard}
-          />
-        </div>
-      )}
-      {!isOpenCard && (
-        <FootContainer>
           <div
-            className="add_card"
-            onClick={() => {
-              setisOpenCard(true);
+            key={columnId}
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            style={{
+              borderRadius: 8,
+              background: snapshot.isDraggingOver ? 'lightblue' : '#ececec',
             }}
           >
-            <PlusOutlined />
-            <p>Add a Card</p>
+            <ListContainer>
+              <form
+                className="list_form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  updateList(id, { id, name: newTitle, items });
+                }}
+              >
+                <Input
+                  className="list_title"
+                  name="list_title"
+                  placeholder="Enter list title..."
+                  value={focused ? newTitle : name}
+                  onFocus={onFocus}
+                  onBlur={onBlur}
+                  onChange={(e) => {
+                    const { value } = e.target;
+                    setNewTitle(value);
+                  }}
+                />
+                <CloseOutlined onClick={() => deleteList(id)} />
+              </form>
+              {items.map((item: any, index: number) => {
+                return (
+                  <Draggable key={item.id} draggableId={item.id} index={index}>
+                    {(provided, snapshot) => {
+                      return (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={{
+                            backgroundColor: snapshot.isDragging
+                              ? '#fde0e0'
+                              : '#fff',
+                            ...provided.draggableProps.style,
+                          }}
+                        >
+                          <Card data={item} />
+                        </div>
+                      );
+                    }}
+                  </Draggable>
+                );
+              })}
+              {provided.placeholder}
+              {isOpenCard && (
+                <div ref={ref}>
+                  <CreateCard
+                    listId={id}
+                    listName={name}
+                    cards={items}
+                    onClose={closeAddCard}
+                  />
+                </div>
+              )}
+              {!isOpenCard && (
+                <FootContainer>
+                  <div
+                    className="add_card"
+                    onClick={() => {
+                      setisOpenCard(true);
+                    }}
+                  >
+                    <PlusOutlined />
+                    <p>Add a Card</p>
+                  </div>
+                </FootContainer>
+              )}
+            </ListContainer>
           </div>
-        </FootContainer>
-      )}
-    </ListContainer>
+        );
+      }}
+    </Droppable>
   );
 }
 

@@ -5,6 +5,7 @@ import { GlobalStyles } from './styles';
 import Home from './pages/Home';
 import Board from './pages/Board';
 import Sub from './pages/sub';
+import B from './pages/board2';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Route exact path="/" component={Home} />
       <Route exact path="/board/:title" component={Board} />
       <Route exact path="/sub" component={Sub} />
+      <Route exact path="/b" component={B} />
     </Fragment>
   );
 }
