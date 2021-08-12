@@ -26,6 +26,23 @@ const onDragEnd = (result: any, columns: any, setColumns: any) => {
   if (!result.destination) return;
   const { source, destination } = result;
 
+  if (!result.destination) {
+    return;
+  }
+
+  /*
+  1 object to arr
+  2 순서
+  3 arr to object
+  */
+  if (result.type === 'COLUMN') {
+    const sourceIdx = source.index;
+    const destinIdx = destination.index;
+    // console.log(Object.entries(columns));
+
+    return;
+  }
+
   if (source.droppableId !== destination.droppableId) {
     const sourceColumn = columns[source.droppableId];
     const destColumn = columns[destination.droppableId];
@@ -96,19 +113,17 @@ function Board() {
               {Object.entries(columns).map(
                 ([columnId, column]: [any, any], index) => {
                   return (
-                    <Fragment key={index}>
-                      <Draggable draggableId={columnId} index={index}>
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <List columnId={columnId} {...column} />
-                          </div>
-                        )}
-                      </Draggable>
-                    </Fragment>
+                    <Draggable draggableId={columnId} index={index} key={index}>
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <List columnId={columnId} {...column} />
+                        </div>
+                      )}
+                    </Draggable>
                   );
                 },
               )}
