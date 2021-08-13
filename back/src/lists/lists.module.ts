@@ -3,7 +3,7 @@ import { ListsService } from './lists.service';
 import { ListsController } from './lists.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { List } from './entities/list.entity';
-import { Board } from 'src/boards/entities/board.entity';
+import { Board } from 'src/boards/board.entity';
 import { Card } from 'src/cards/entities/card.entity';
 
 @Module({

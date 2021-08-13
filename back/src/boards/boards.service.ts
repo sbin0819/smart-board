@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 
-import { Board } from './entities/board.entity';
+import { Board } from './board.entity';
 import { List } from 'src/lists/entities/list.entity';
 
 @Injectable()

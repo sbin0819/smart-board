@@ -4,6 +4,8 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   JoinTable,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { List } from 'src/lists/entities/list.entity';
 
@@ -18,4 +20,10 @@ export class Board {
   @OneToMany(() => List, (list) => list.board)
   @JoinTable()
   lists: List[];
+
+  @CreateDateColumn()
+  created: Date;
+
+  @UpdateDateColumn({ nullable: true })
+  updated: Date;
 }

@@ -5,7 +5,7 @@ import { CreateListDto } from './dto/create-list.dto';
 import { UpdateListDto } from './dto/update-list.dto';
 
 import { List } from './entities/list.entity';
-import { Board } from 'src/boards/entities/board.entity';
+import { Board } from 'src/boards/board.entity';
 
 @Injectable()
 export class ListsService {

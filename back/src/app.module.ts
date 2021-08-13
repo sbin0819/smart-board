@@ -9,7 +9,7 @@ import { BoardsModule } from './boards/boards.module';
 import { ListsModule } from './lists/lists.module';
 import { CardsModule } from './cards/cards.module';
 
-import { Board } from './boards/entities/board.entity';
+import { Board } from './boards/board.entity';
 import { List } from './lists/entities/list.entity';
 import { Card } from './cards/entities/card.entity';
 
