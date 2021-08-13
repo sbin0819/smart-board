@@ -53,22 +53,30 @@ export class BoardsService {
     return board;
   }
 
-  update(id: number, updateBoardDto: UpdateBoardDto) {
-    return `This action updates a #${id} board`;
-  }
-
-  async remove(id: number) {
+  async update(id: number, updateBoardDto: UpdateBoardDto) {
     const board = await this.boardRepository.findOne({ where: { id: id } });
-    const lists = await this.listRepository.find();
-
-    console.log(lists);
     if (!board) {
       return {
         statusCode: 204,
         message: '해당하는 board가 없습니다.',
       };
     }
-    // await this.boardRepository.remove(board);
+    return `This action updates a #${id} board`;
+  }
+
+  async remove(id: number) {
+    const board = await this.boardRepository.findOne({ where: { id: id } });
+    const lists = await this.listRepository.find({ where: { boardId: id } });
+    if (!board) {
+      return {
+        statusCode: 204,
+        message: '해당하는 board가 없습니다.',
+      };
+    }
+    await this.listRepository.remove(lists);
+    if (lists) {
+      await this.boardRepository.remove(board);
+    }
     return `This action removes a #${id} board`;
   }
 }
