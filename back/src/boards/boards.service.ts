@@ -61,7 +61,9 @@ export class BoardsService {
         message: '해당하는 board가 없습니다.',
       };
     }
-    return `This action updates a #${id} board`;
+    board.title = updateBoardDto.title;
+    const updatedBoard = await this.boardRepository.save(board);
+    return updatedBoard;
   }
 
   async remove(id: number) {
