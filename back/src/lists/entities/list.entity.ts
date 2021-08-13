@@ -5,6 +5,7 @@ import {
   ManyToOne,
   OneToMany,
   JoinTable,
+  JoinColumn,
 } from 'typeorm';
 import { Board } from 'src/boards/entities/board.entity';
 import { Card } from 'src/cards/entities/card.entity';
@@ -17,7 +18,11 @@ export class List {
   @Column()
   title: string;
 
+  @Column()
+  boardId: number;
+
   @ManyToOne(() => Board, (board) => board.lists)
+  @JoinColumn({ name: 'boardId' })
   board: Board;
 
   @OneToMany(() => Card, (card) => card.list)
