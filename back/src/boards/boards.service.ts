@@ -24,8 +24,9 @@ export class BoardsService {
     return boards;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} board`;
+  async findOne(id: number) {
+    const board = await this.boardRepository.find({ where: { id: id } });
+    return board;
   }
 
   update(id: number, updateBoardDto: UpdateBoardDto) {
