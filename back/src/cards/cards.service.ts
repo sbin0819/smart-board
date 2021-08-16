@@ -16,14 +16,14 @@ export class CardsService {
     private listRepository: Repository<List>,
   ) {}
 
-  async create(createCardDto: CreateCardDto) {
-    const list = await this.listRepository.findOne({ where: { id: 1 } });
+  async create(listId: string, createCardDto: CreateCardDto) {
+    const list = await this.listRepository.findOne({ where: { id: listId } });
     const card = await this.cardRepository.create({
       ...createCardDto,
       list,
     });
     await this.cardRepository.save(card);
-    return 'This action adds a new card';
+    return card;
   }
 
   async findAll() {
@@ -31,15 +31,27 @@ export class CardsService {
     return cards.map((card) => card);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} card`;
+  async findOne(id: number) {
+    const card = await this.cardRepository.findOne({ where: { id: id } });
+    return card;
   }
 
-  update(id: number, updateCardDto: UpdateCardDto) {
-    return `This action updates a #${id} card`;
+  async update(id: number, updateCardDto: UpdateCardDto) {
+    const card = await this.cardRepository.findOne({ where: { id: id } });
+    if (!card) {
+      return {
+        statusCode: 204,
+        message: '해당하는 card가 없습니다.',
+      };
+    }
+    card.title = updateCardDto.title;
+    const updatedCard = await this.cardRepository.save(card);
+    return updatedCard;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    const list = await this.cardRepository.findOne({ where: { id: id } });
+    await this.cardRepository.remove(list);
     return `This action removes a #${id} card`;
   }
 }

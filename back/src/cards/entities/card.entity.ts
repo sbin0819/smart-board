@@ -1,5 +1,12 @@
 import { List } from 'src/lists/entities/list.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Card {
@@ -11,4 +18,10 @@ export class Card {
 
   @ManyToOne(() => List, (list) => list.cards)
   list: List;
+
+  @CreateDateColumn()
+  created: Date;
+
+  @UpdateDateColumn({ nullable: true })
+  updated: Date;
 }
