@@ -16,9 +16,9 @@ import { UpdateCardDto } from './dto/update-card.dto';
 export class CardsController {
   constructor(private readonly cardsService: CardsService) {}
 
-  @Post()
-  create(@Body() createCardDto: CreateCardDto) {
-    return this.cardsService.create(createCardDto);
+  @Post('list/:id')
+  create(@Param('id') listId: string, @Body() createListDto: CreateCardDto) {
+    return this.cardsService.create(listId, createListDto);
   }
 
   @Get()

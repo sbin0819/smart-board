@@ -25,7 +25,7 @@ export class ListsService {
       board,
     });
     await this.listRepository.save(list);
-    return 'This action adds a new list';
+    return list;
   }
 
   async findAll() {
@@ -33,15 +33,30 @@ export class ListsService {
     return lists;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} list`;
+  async findOne(id: number) {
+    const list = await this.listRepository.findOne({
+      where: { id: id },
+      relations: ['cards'],
+    });
+    return list;
   }
 
-  update(id: number, updateListDto: UpdateListDto) {
-    return `This action updates a #${id} list`;
+  async update(id: number, updateListDto: UpdateListDto) {
+    const list = await this.listRepository.findOne({ where: { id: id } });
+    if (!list) {
+      return {
+        statusCode: 204,
+        message: '해당하는 list가 없습니다.',
+      };
+    }
+    list.title = updateListDto.title;
+    const updatedList = await this.listRepository.save(list);
+    return updatedList;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    const list = await this.listRepository.findOne({ where: { id: id } });
+    await this.listRepository.remove(list);
     return `This action removes a #${id} list`;
   }
 }
