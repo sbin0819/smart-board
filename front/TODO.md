@@ -7,21 +7,21 @@
 - useClickOutside
 
 ```jsx
-  import useClickOutside from './useClickOutside'
-  
-  const [isSideBarOpen, setIsSidebarOpen] = useState(isDesktop);
+import useClickOutside from './useClickOutside';
 
-  const sideBarRef = useRef('');
+const [isSideBarOpen, setIsSidebarOpen] = useState(isDesktop);
 
-  useEffect(() => {
-    dispatch({ type: SET_AUTH_USER, payload: authUser });
-  }, [dispatch, authUser]);
+const sideBarRef = useRef('');
 
-  useClickOutside(sideBarRef, () => {
-    if (!isDesktop && isSideBarOpen) {
-      setIsSidebarOpen(false);
-    }
-  });
+useEffect(() => {
+  dispatch({ type: SET_AUTH_USER, payload: authUser });
+}, [dispatch, authUser]);
+
+useClickOutside(sideBarRef, () => {
+  if (!isDesktop && isSideBarOpen) {
+    setIsSidebarOpen(false);
+  }
+});
 
 import { useEffect } from 'react';
 
@@ -46,3 +46,4 @@ export default useClickOutside = (ref, handler) => {
     }
   };
 };
+```
